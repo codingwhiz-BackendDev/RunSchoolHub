@@ -535,14 +535,17 @@ def send_chat_message(request):
 
         # If image is provided, update the message with the image
         if image:
-            image_path = '/media/Image/' + str(image.name)
+            fs = FileSystemStorage()
+            filename = fs.save('Chat_Image/' + str(image), image) 
+            image_path = fs.url(filename)
             messages.image = image_path
             messages.save()
 
         # If video is provided, update the message with the video
         if video:
-            video_path = '/media/Image/' + str(video)
-            print(video_path)
+            fs = FileSystemStorage()
+            filename = fs.save('Chat_Image'+ str(video), video)
+            video_path = fs.url(filename)
             messages.video = video_path
             messages.save()
             
