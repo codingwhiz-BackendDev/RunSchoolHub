@@ -1,0 +1,316 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home -page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+
+    {% block content %}
+
+    <br><br><br><br>
+    <div class="m-auto shadow rounded-md  -mx-2 lg:mx-0 w-4">
+
+        <!--<h1 class="lg:text-2xl text-lg font-extrabold leading-none text-gray-900 tracking-tight mb-5"> Feed </h1>--->
+        <br><br>
+        <div class="lg:flex justify-center lg:space-x-10 lg:space-y-0 space-y-5">
+
+            <!-- left sidebar-->
+            <div class="space-y-5 flex-shrink-0 lg:w-7/12">
+
+                {% for post in post reversed %}
+                <!-- post 1-->
+                <div class="bg-white shadow rounded-md  -mx-2 lg:mx-0">
+                    <!-- post header-->
+                    <div class="flex justify-between items-center px-4 py-3">
+                        <div class="flex flex-1 items-center space-x-4">
+                            <a href="profile/{{post.user}}">
+                                <div class="bg-gradient-to-tr from-yellow-600 to-pink-600 p-0.5 rounded-full">
+
+
+                                    {% if post.profileimage %}
+                                    <img src="{{post.profileimage.url}}"
+                                        class="bg-gray-200 border border-white rounded-full w-8 h-8">
+                                    {% endif %}
+
+
+
+                                </div>
+                            </a>
+                            <span class="block capitalize font-semibold ">
+                                <a href="profile/{{post.user}}">{{post.user}}</a>
+
+                                {% if user_profile.is_verified == True and post.user == user_profile.user %}
+
+                                <span><i style="color: #ccc; font-size:x-large" class="fas fa-check-circle"></i></span>
+
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div>
+                            <a href="#"> <i
+                                    class="icon-feather-more-horizontal text-2xl hover:bg-gray-200 rounded-full p-2 transition -mr-1 "></i>
+                            </a>
+                            <div class="bg-white w-56 shadow-md mx-auto p-2 mt-12 rounded-md text-gray-500 hidden text-base border border-gray-100  "
+                                uk-drop="mode: click;pos: top-right">
+
+                                <ul class="space-y-1">
+                                    <li>
+                                        <a href="#"
+                                            class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md ">
+                                            <i class="uil-share-alt mr-1"></i> Share
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#"
+                                            class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md ">
+                                            <i class="uil-edit-alt mr-1"></i> Edit Post
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#"
+                                            class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md ">
+                                            <i class="uil-comment-slash mr-1"></i> Disable comments
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="favourite_post/{{post.id}}"
+                                            class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md ">
+                                            <i class="uil-favorite mr-1"></i> Favourites
+                                        </a>
+                                        <!-- <form id="favourites" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="{{request.user}}" name="name" id="name">
+                                            <input type="hidden" name="ids" id="ids" value="{{post.id}}">
+                                            <button type="submit"
+                                                class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md ">
+                                                <i class="uil-favorite mr-1"></i> Favourites
+                                            </button>
+                                        </form> -->
+
+                                    </li>
+                                    <li>
+                                        <hr class="-mx-2 my-2 ">
+                                    </li>
+                                    <li>
+                                        {% if post.user == user.username %}
+                                        <a href="delete/{{post.id}}"
+                                            class="flex items-center px-3 py-2 text-red-500 hover:bg-red-100 hover:text-red-500 rounded-md ">
+                                            <i class="uil-trash-alt mr-1"></i> Delete
+                                        </a>
+                                        {% endif %}
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="card-body">{{post.caption}}
+                            <p><a href="post/{{post.id}}"><span class="fas fa-eye"></span></a></p>
+                        </div>
+                    </div>
+                    <div>
+
+
+                        {% if post.image %}
+                        <a href="{{post.image.url}}">
+                            <img src="{{post.image.url}}" alt="">
+                        </a>
+                        {% endif %}
+
+                        {% if post.video %}
+                        <video controls width="100%">
+                            <source src="{{post.video.url}}" type="video/mp4">
+                            <source src="{{post.video.url}}" type="video/ogg">
+                        </video>
+                        {% endif %}
+
+
+                        {% if post.audio %}
+                        <audio controls>
+                            <source src="{{post.audio.url}}" type="audio/ogg">
+                            <source src="{{post.audio.url}}" type="audio/mpeg">
+                        </audio>
+                        {% endif %}
+
+                        {% if post.pdf %}
+                        <a href="{{post.pdf.url}}">
+                            <object width="100%" height="500px" data="{{post.pdf.url}}"></object>
+                        </a>
+                        {% endif %}
+
+
+                    </div>
+
+
+                    <div class="py-3 px-4 space-y-3">
+
+                        <div class="flex lg:font-bold">
+                            <div class="p-2 rounded-full text-black">
+                                {% if post.no_of_likes == 0 or post.no_of_likes == 1 %}
+                                <span id="display">{{post.no_of_likes}} like</span>
+                                {% else %}
+                                <span id="display">{{post.no_of_likes}} likes</span>
+                                {% endif %}
+                            </div>
+
+                            <!--Like Post -->
+
+                            <!-- <form id="like-post" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" id="name" name="name" value="{{user.username}}">
+                                <input type="hidden" id="ids" name="ids" value="{{post.id}}">
+                                <button type="submit" class="flex items-center space-x-2">
+                                    <div class="p-2 rounded-full text-black">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                            width="25" height="25" class="">
+                                            <path
+                                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </form> -->
+
+                            <div class="p-2 rounded-full text-black">
+                                {% if post.no_of_commenters == 0 or post.no_of_commenters == 1 %}
+                                <span>{{post.no_of_commenters}} comment</span>
+                                {% else %}
+                                <span>{{post.no_of_commenters}} comments</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="p-2 rounded-full text-black">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                    width="25" height="25" class="">
+                                    <path fill-rule="evenodd"
+                                        d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+
+
+                            {% if post.image %}
+                            <a href="{{post.image.url}}" download
+                                class="flex items-center space-x-2 flex-1 justify-end">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    aria-hidden="true" role="img" width="25" height="25"
+                                    preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16">
+                                    <g fill="currentColor">
+                                        <path
+                                            d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v6h-2a.5.5 0 0 0-.354.854l2.5 2.5a.5.5 0 0 0 .708 0l2.5-2.5A.5.5 0 0 0 10.5 7.5h-2v-6z" />
+                                    </g>
+                                </svg>
+
+                            </a>
+                            {% endif %}
+
+                            {% if post.video %}
+                            <a href="{{post.video.url}}" download
+                                class="flex items-center space-x-2 flex-1 justify-end">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    aria-hidden="true" role="img" width="25" height="25"
+                                    preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16">
+                                    <g fill="currentColor">
+                                        <path
+                                            d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v6h-2a.5.5 0 0 0-.354.854l2.5 2.5a.5.5 0 0 0 .708 0l2.5-2.5A.5.5 0 0 0 10.5 7.5h-2v-6z" />
+                                    </g>
+                                </svg>
+
+                            </a>
+                            {% endif %}
+
+                            {% if post.audio %}
+                            <a href="{{post.audio.url}}" download
+                                class="flex items-center space-x-2 flex-1 justify-end">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    aria-hidden="true" role="img" width="25" height="25"
+                                    preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16">
+                                    <g fill="currentColor">
+                                        <path
+                                            d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v6h-2a.5.5 0 0 0-.354.854l2.5 2.5a.5.5 0 0 0 .708 0l2.5-2.5A.5.5 0 0 0 10.5 7.5h-2v-6z" />
+                                    </g>
+                                </svg>
+
+                            </a>
+                            {% endif %}
+
+                            {% if post.pdf %}
+                            <a href="{{post.pdf.url}}" download class="flex items-center space-x-2 flex-1 justify-end">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    aria-hidden="true" role="img" width="25" height="25"
+                                    preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16">
+                                    <g fill="currentColor">
+                                        <path
+                                            d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v6h-2a.5.5 0 0 0-.354.854l2.5 2.5a.5.5 0 0 0 .708 0l2.5-2.5A.5.5 0 0 0 10.5 7.5h-2v-6z" />
+                                    </g>
+                                </svg>
+                            </a>
+                            {% endif %}
+                        </div>
+                        <!-- <div class="flex items-center space-x-3">
+                            <div class="flex items-center">
+                                <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}" alt=""
+                                    class="w-6 h-6 rounded-full border-2 border-white ">
+                                <img src="{% static 'assets/images/avatars/avatar-4.jpg' %}" alt=""
+                                    class="w-6 h-6 rounded-full border-2 border-white  -ml-2">
+                                <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" alt=""
+                                    class="w-6 h-6 rounded-full border-2 border-white  -ml-2">
+                            </div>
+                        </div> -->
+
+
+
+                    </div>
+
+                </div>
+                {% endfor %}
+
+                {% if not post %}
+                <div class="p-2 rounded-full text-back text-center card-header">
+                    <p>No post, follow users to see their post,</p>
+                    <p>Or search for post and follow users</p>
+                </div>
+
+                {% endif %}
+
+
+
+                <!-- Load more-->
+                <div class="flex justify-center mt-6" id="toggle" hidden>
+                    <a href="#" class="bg-white  font-semibold my-3 px-6 py-2 rounded-full shadow-md  ">
+                        Load more ..</a>
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+    </div>
+
+    </div>
+
+    <br><br><br><br>
+
+    {% endblock content%}
+    <script src="{% static 'like.js' %}"></script>
+</body>
+
+
+</html>

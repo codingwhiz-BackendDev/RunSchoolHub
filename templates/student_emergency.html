@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    {% block content %}
+    <br><br><br><br><br><br>
+    <div class="lg:w-8/12 m-auto">
+        <form action="" method="post">
+            {% csrf_token %}
+            <textarea name="message" placeholder="Input youur Emergency" id="" cols="30" rows="10"></textarea>
+
+            <br>
+            <input type="submit" style="text-align: center; margin:auto" value="Send">
+        </form>
+    </div>
+    <br><br><br><br><br><br>
+    {% endblock content %}
+
+</body>
+
+</html>

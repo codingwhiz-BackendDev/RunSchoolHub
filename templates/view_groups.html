@@ -1,0 +1,125 @@
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groups</title>
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome3/css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome3/css/all.css' %}">
+</head>
+
+<body>
+
+    <!-- right sidebar-->
+    <div class="lg:w-8/12 m-auto mt-4">
+        {% for message in messages %}
+        <div class="alert alert-dark text-center">
+            <p>{{message}}</p>
+        </div>
+        {% endfor %}
+        <div class="bg-white  shadow-md rounded-md overflow-hidden">
+
+            <div class="bg-gray-50  border-b border-gray-100 flex items-baseline justify-between py-4 px-6 ">
+                <h2 class="font-semibold text-lg">Create Group</h2>
+                <a href="/"> <span class="btn btn-danger">Home</span></a>
+            </div>
+
+
+
+            <form action="create_group" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="left-side">
+                    <!-- <input type="file"> -->
+                    <div style="display: flex;">
+                        <input type="text" required name="group_name" placeholder="Group Name....">
+                        <input type="submit" value="Create">
+                    </div>
+                </div>
+            </form>
+
+
+            <!------------------------- Search Groups ------------------------>
+
+            <div class="bg-gray-50  border-b border-gray-100 flex items-baseline justify-between py-4 px-6 ">
+                <h4 class="font-semibold text-lg">Search Groups</h4>
+            </div>
+            <form action="search_group" method="POST">
+                {% csrf_token %}
+                <div class="left-side">
+                    <!-- <input type="file"> -->
+                    <div style="display: flex;">
+                        <input type="text" required name="group_name" placeholder="Group Name....">
+                    </div>
+                </div>
+            </form>
+
+            {% for result in result reversed %}
+            <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
+                <div class="flex items-center justify-between py-3">
+                    <div class="flex flex-1 items-center space-x-4">
+                        <!-- <a href="profile/{{users.user}}">
+                            <img src="{{users.profileimage.url}}" class="bg-gray-200 rounded-full w-10 h-10">
+                        </a> -->
+                        <div class="flex flex-col">
+                            <span class="block capitalize font-semibold"><a
+                                    href="group_chat/{{result.name}}">{{result.name}}</a>
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <!-- <form action="join_group" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{user.id}}" name="user">
+                        <input type="hidden" value="{{result.name}}" name="group">
+                        <input type="submit" value="Join">
+                    </form> -->
+                </div>
+
+            </div>
+            {% endfor %}
+
+
+
+
+
+            <!-------------------- All the groups ---------------------------->
+
+            <div class="bg-gray-50  border-b border-gray-100 flex items-baseline justify-between py-4 px-6 ">
+                <h4 class="font-semibold text-lg">All Groups</h4>
+            </div>
+
+
+            {% for group in group reversed %}
+            <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
+                <div class="flex items-center justify-between py-3">
+                    <div class="flex flex-1 items-center space-x-4">
+                        <div class="flex flex-col">
+                            <span class="block capitalize font-semibold"><a
+                                    href="group_chat/{{group.name}}">{{group.name}}</a></span>
+                        </div>
+                    </div>
+                    <!-- 
+
+                    <form action="join_group" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{user.id}}" name="user">
+                        <input type="hidden" value="{{group.name}}" name="group">
+                        <input type="submit" value="Join">
+                    </form> -->
+                </div>
+
+            </div>
+            {% endfor %}
+
+
+        </div>
+    </div>
+</body>
+
+</html>

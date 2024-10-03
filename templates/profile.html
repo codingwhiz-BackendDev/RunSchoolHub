@@ -1,0 +1,224 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <title>Profile - {{user_profile.user.username}}</title>
+  <!-- <link rel="icon" href="images/fav.png" type="image/png" sizes="16x16"> -->
+
+  <link rel="stylesheet" href="{% static 'css/main.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/color.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
+  <link rel="stylesheet" href="{% static 'font-awesome3/css/all.css' %}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <!--<div class="se-pre-con"></div>-->
+  <div class="theme-layout"></div>
+
+  <section>
+    <div class="feature-photo">
+      <figure>
+        <img src="{{user_profile.profileimage.url}}" alt="" />
+      </figure>
+
+
+      <!-- <form class="edit-phto">
+					<i class="fa fa-camera-retro"></i>
+					<label class="fileContainer">
+						Upload Cover Photo
+					<input type="file"/>
+					</label>
+				</form> -->
+      <div class="container-fluid">
+        <div class="row merged">
+          <div class="col-lg-10 col-sm-9">
+            <div class="timeline-info">
+              <p class="admin-name">
+              <h5 style="
+                        color: black;
+                        white-space: nowrap;
+                        width: 110px;
+                        font-size: 27px;
+                            ">
+
+                {% if user_profile.is_verified == True %}
+                <b>{{user_profile.user}}</b>
+                <span><i style="color: #ccc; font-size:x-large" class="fas fa-check-circle"></i></span>
+                <!--<i class="fa fa-check-circle" style="color: #48dbfb;" aria-hidden="true"></i>-->
+                {% else %}
+                <b>{{user_profile.user}}</b>
+                {% endif %}
+
+              </h5>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- top area -->
+  <section>
+    <div class="bio">
+
+      {% if user_profile.nickname %}
+      <p>Nickname :{{user_profile.nickname}}</p>
+      {% endif %}
+
+      {% if user_profile.bio %}
+      <p>Bio :{{user_profile.bio}}</p>
+      {% endif %}
+
+      {% if user_profile.faculty %}
+      <p>Faculty :{{user_profile.faculty}}</p>
+      {% endif %}
+    </div>
+  </section>
+  <div class="row">
+    <div class="col-3">
+
+      {% if post_len == 0 %}
+      No Post
+      {% elif post_len == 1%}
+      1 Post
+      {% else %}
+      {{post_len}} posts
+      {% endif %}
+
+    </div>
+
+    {% if user_followers == 0 %}
+    <div class="col-3">0 followers</div>
+    {% elif user_followers == 1 %}
+    <div class="col-3">{{user_followers}} follower</div>
+    {% else %}
+    <div class="col-3">{{user_followers}} followers</div>
+    {% endif %}
+
+    {% if user_following == 0 %}
+    <div class="col-3">0 following</div>
+    {% elif user_following == 1 %}
+    <div class="col-3">{{user_following}} following</div>
+    {% else %}
+    <div class="col-3">{{user_following}} following</div>
+    {% endif %}
+
+    {% if user_profile.user == request.user %}
+    <div class="col-3 "><a href="/" class="btn btn-secondary btn-sm">Home</a></div>
+    {% else %}
+    <form id="follow-form" method="POST">
+      {% csrf_token %}
+      <input type="hidden" id="follower" value="{{user.username}}" name="follower">
+      <input type="hidden" id="user" value="{{user_profile.user}}" name="user">
+      <div class="col-3 "><input type="submit" id="display-follow" value="{{text}}" class="btn btn-secondary btn-sm"
+          style="font-size:x-small;" />
+      </div>
+    </form>
+    {% endif %}
+  </div>
+  <section>
+    <div class="gap gray-bg">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row" id="page-contents">
+              <div class="col-lg-3">
+                <aside class="sidebar static"></aside>
+              </div>
+              <!-- sidebar -->
+
+              <div class="col-lg-6">
+                <div class="central-meta">
+                  <ol>
+                    {% for post in post reversed %}
+                    <li>
+                      {% if post.image %}
+                      <div class="row g-2">
+                        <div class="col mb-2">
+                          <a href="{{post.image.url}}">
+                            <img src="{{post.image.url}}" alt="image 1" class="w-100 rounded-3">
+                          </a>
+                        </div>
+                      </div>
+                      {% endif %}
+
+
+                      {% if post.video %}
+                      <div class="row g-2">
+                        <div class="col mb-2">
+                          <video controls width="100%">
+                            <source src="{{post.video.url}}" type="video/mp4">
+                            <source src="{{post.video.url}}" type="video/ogg">
+                          </video>
+                        </div>
+                      </div>
+                      {% endif %}
+
+
+                      {% if post.audio %}
+                      <div class="row g-2">
+                        <div class="col mb-2">
+                          <a href="{{post.audio.url}}">
+                            <audio controls>
+                              <source src="{{post.audio.url}}" type="audio/ogg">
+                              <source src="{{post.audio.url}}" type="audio/mpeg">
+                            </audio>
+                          </a>
+                        </div>
+                      </div>
+                      {% endif %}
+
+
+                      {% if post.pdf %}
+                      <div class="row g-2">
+                        <div class="col mb-2">
+                          <a href="{{post.pdf.url}}">
+                            <object width="100%" height="200px" data="{{post.pdf.url}}"></object>
+                          </a>
+                        </div>
+                      </div>
+                      {% endif %}
+
+
+                    </li>
+                    {% endfor %}
+                  </ol>
+                  <!--<div class="lodmore"><button class="btn-view btn-load-more"></button></div>-->
+                </div>
+                <!-- photos -->
+              </div>
+              <!-- centerl meta -->
+              <div class="col-lg-3">
+                <aside class="sidebar static"></aside>
+              </div>
+              <!-- sidebar -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="{% static 'assets/js/tippy.all.min.js' %}"></script>
+  <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'assets/js/uikit.js' %}"></script>
+  <script src="{% static 'assets/js/simplebar.js' %}"></script>
+  <script src="{% static 'assets/js/custom.js' %}"></script>
+
+  <script data-cfasync="false"
+    src="{% static '../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script>
+  <script src="{% static 'js/main.min.js' %}"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+
+  <script src="{% static 'like.js' %}"></script>
+</body>
+
+</html>

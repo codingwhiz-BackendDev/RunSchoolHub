@@ -1,0 +1,85 @@
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome3/css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+    <title>Group Chat</title>
+    <style>
+        body {
+            margin: 0%;
+            padding: 0;
+            width: 90%;
+            margin: auto;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body class="" style="background-color: #ccc;">
+    <input type="hidden" value="{{get_group.name}}" id="pks">
+    <input type="hidden" value="{{request.user}}" id="user">
+    <div class="bg-white shadow rounded-md  -mx-2 lg:mx-0 w-4 header_inner"
+        style="position:fixed;width: 100%;z-index:1;top:0%;left:10px">
+
+        <!-- post header-->
+        <div style="width:100%;margin:auto">
+            <div class="">
+                <span class="block capitalize font-semibold text-center">{{get_group}} - Group Chat</span>
+            </div>
+            <div class="flex justify-between items-center px-4 py-3">
+                <a href="{{user_profile.profileimage.url}}">
+                    <img src="{{user_profile.profileimage.url}}" class="rounded-full" width="70px" height="70px" alt="">
+                </a>
+                <a href="/view_groups"> <i class="fas fa-arrow-left">
+                    </i>
+                </a>
+
+            </div>
+        </div>
+
+    </div><br><br>
+
+    <!-- Here gets the comments , handled in like.js -->
+    <div class="border-t pt-4 space-y-4" id="display-comment">
+
+    </div>
+    <br><br>
+
+    <div style="bottom:0px; width: 90%;position:fixed;width: 90%;z-index:1;">
+        <form id="group-comment" method="POST">
+            {% csrf_token %}
+
+            <input type="hidden" id="name" name="name" value="{{request.user}}" id="">
+            <input type="hidden" id="ids" name="ids" value="{{get_group.id}}">
+            <input type="hidden" id="profile_image" name="profile_image" value="{{user_profile.profileimage.url}}">
+            <input type="hidden" id="group_name" name="group_name" value="{{get_group.name}}">
+            <div class="bg-gray-100 bg-gray-100 rounded-full rounded-md relative ">
+                <input type="text" id="comment" required name="comment" autofocus placeholder="Type a message"
+                    class="bg-transparent max-h-10 shadow-none">
+                <div class="absolute bottom-0 flex h-full items-center right-0 right-3 text-xl space-x-2">
+                    <!-- <a href="#"><i class="uil-image"></i></a>
+                                    <a href="#"> <i class="uil-video"></i></a> -->
+                </div>
+            </div>
+        </form>
+    </div>
+    <br>
+
+
+    <script src="{% static 'assets/js/tippy.all.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/uikit.js' %}"></script>
+    <script src="{% static 'assets/js/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+
+    <script src="{% static 'group.js' %}"></script>
+</body>
+
+</html>

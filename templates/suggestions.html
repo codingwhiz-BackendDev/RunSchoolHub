@@ -1,0 +1,109 @@
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suggestions -Page</title>
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome3/css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome3/css/all.css' %}">
+</head>
+
+<body>
+
+    <!-- right sidebar-->
+    <div class="lg:w-8/12 m-auto">
+        <div class="bg-white  shadow-md rounded-md overflow-hidden">
+
+            <div class="bg-gray-50  border-b border-gray-100 flex items-baseline justify-between py-4 px-6 ">
+                <h2 class="font-semibold text-lg"> Search For Users You Can Follow</h2>
+                <a href="/"> <span class="btn btn-danger">Home</span></a>
+            </div>
+
+
+
+            <form action="/search_user" method="POST">
+                {% csrf_token %}
+                <div class="left-side">
+                    <input type="hidden" name="user_faculty" value="{{user_profile.faculty}}">
+                    <input type="text" required name="user" placeholder="Search for users you can follow ....">
+
+                </div>
+            </form>
+
+            {% for users in username_profile_list %}
+            {% if users.user != request.user %}
+            <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
+                <div class="flex items-center justify-between py-3">
+                    <div class="flex flex-1 items-center space-x-4">
+                        <a href="profile/{{users.user}}">
+                            <img src="{{users.profileimage.url}}" class="bg-gray-200 rounded-full w-10 h-10">
+                        </a>
+                        <div class="flex flex-col">
+                            <span class="block capitalize font-semibold"><a
+                                    href="chat/{{users.id_user}}">{{users.user}}</a></span>
+
+                            <span class="block capitalize text-sm"> {{users.nickname}} </span>
+                        </div>
+                    </div>
+
+                    <p class="border-gray-200 font-semibold px-4 py-1">
+                        {{users.bio}} </p>
+                </div>
+
+            </div>
+            {% endif %}
+
+            {% if users.user == ''%}
+            <div class="flex items-center justify-between py-3">
+                <div class="flex flex-1 items-center space-x-4">
+                    <a href="">
+                        <img src="" class="bg-gray-200 rounded-full w-10 h-10">
+                    </a>
+                    <div class="flex flex-col">
+                        <span class="block capitalize font-semibold">No User Found</span>
+
+                        <span class="block capitalize text-sm"> </span>
+                    </div>
+                </div>
+
+                <p class="border-gray-200 font-semibold px-4 py-1">
+                    {{users.bio}} </p>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+
+            <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
+                <h3 class="font-semibold text-lg">Users You Can Follow</h3>
+                {% for suggestion in suggestions_usernames_profile_list %}
+                <div class="flex items-center justify-between py-3">
+                    <div class="flex flex-1 items-center space-x-4">
+                        <a href="profile/{{suggestion.user}}">
+                            <img src="{{suggestion.profileimage.url}}" class="bg-gray-200 rounded-full w-10 h-10">
+                        </a>
+                        <div class="flex flex-col">
+                            <span class="block capitalize font-semibold"><a
+                                    href="chat/{{suggestion.user.id}}">{{suggestion.user}}</a></span>
+
+                            <span class="block capitalize text-sm"> {{suggestion.nickname}} </span>
+                        </div>
+                    </div>
+
+                    <p class="border-gray-200 font-semibold px-4 py-1">
+                        {{suggestion.bio}} </p>
+                </div>
+                {% endfor %}
+            </div>
+
+
+
+        </div>
+    </div>
+</body>
+
+</html>

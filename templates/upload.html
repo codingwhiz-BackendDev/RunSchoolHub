@@ -1,0 +1,68 @@
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'boot 5/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome3/css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+    <title>Upload -Page</title>
+    <style>
+        body {
+            background-color: #999;
+            margin: 0%;
+            padding: 0;
+            width: 70%;
+            margin: auto;
+        }
+
+        textarea {
+            height: auto;
+            line-height: 27px;
+            padding: 20px;
+            min-height: 130px;
+            -webkit-transition: none !important;
+            transition: none !important;
+            min-width: 100%;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 7px;
+            background-color: #f8f8f8;
+            font-size: 16px;
+            resize: none;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <br>
+    <div class="body">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="profile_image" value="{{user_profile.profileimage}}">
+            <textarea name="caption" required style="text-transform: capitalize;"
+                placeholder="Please Input course code of file..."></textarea>
+            <h6>Upload Pictures</h6>
+            <input type="file" multiple name="image" accept="image/*">
+            <h6>Upload Videos</h6>
+            <input type="file" multiple name="video" accept="video/*">
+            <h6>Upload Audio</h6>
+            <input type="file" multiple name="audio" accept="audio/*">
+            <h6>Upload Pdfs and other documents</h6>
+            <input type="file"
+                accept="application/pdf,application/msword,application/vnd.ms-excel,application/vnd.ms-powerpoint"
+                multiple name="pdf">
+
+            <a href="/"><button class="btn btn-light" style="color: red;" type="button">Back</button></a>
+            <input type="submit" value="Upload" class="btn btn-danger">
+        </form>
+    </div>
+</body>
+
+</html>
