@@ -65,6 +65,12 @@ def register(request):
         password = request.POST['password']
         password2 = request.POST['password2']
         
+        #Strip all white spaces
+        username = username.strip()
+        email = email.strip()
+        password = password.strip()
+        password2 = password2.strip()
+        
         if password == password2 :
             if User.objects.filter(email=email).exists():
                 messages.info(request, 'Email Already Exists')
@@ -90,7 +96,10 @@ def login(request):
     if request.method == 'POST': 
         username = request.POST['username']
         password = request.POST['password']
-            
+        
+        #Strip all white spaces
+        username = username.strip() 
+        password = password.strip()   
         user = auth.authenticate(username=username, password=password)
         print(user)
         if user is not None:
@@ -621,7 +630,18 @@ def course_outlines(request):
 @login_required(login_url='login')
 def student_emergency(request): 
     user_profile = Profile.objects.get(user=request.user) 
- 
+    if request.method == 'POST':
+        body = request.POST['message']
+        account_sid = 'AC9753a1bd05b961528a8ecc63a3ba4166'
+        auth_token = '91e7266a55e8353b4e038ea056c697d0'
+        client = Client(account_sid, auth_token)
+        
+        message = client.messages.create(
+            from_= '+18042698851',
+            body = body,
+            to = '+2348072846035'
+        ) 
+    #     print(message.sid)
     return render(request, 'student_emergency.html', {'user_profile':user_profile})
 
 @login_required(login_url='login')
