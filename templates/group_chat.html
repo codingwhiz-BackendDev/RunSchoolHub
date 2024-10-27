@@ -19,6 +19,33 @@
             margin: auto;
             margin-top: 15px;
         }
+
+        textarea {
+            padding: 4px;
+            -webkit-transition: none !important;
+            transition: none !important;
+            width: 100%;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 7px;
+            background-color: #f8f8f8;
+            font-size: 16px;
+            resize: none;
+        }
+
+        /* Align the camera icon in the input tag */
+
+        .camera-icon {
+            position: absolute;
+            right: 40px;
+            top: -7px;
+        }
+
+        .submit-button {
+            position: absolute;
+            right: 10px;
+            top: -7px;
+        }
     </style>
 </head>
 
@@ -29,21 +56,36 @@
         style="position:fixed;width: 100%;z-index:1;top:0%;left:10px">
 
         <!-- post header-->
-        <div style="width:100%;margin:auto">
-            <div class="">
-                <span class="block capitalize font-semibold text-center">{{get_group}} - Group Chat</span>
-            </div>
-            <div class="flex justify-between items-center px-4 py-3">
-                <a href="{{user_profile.profileimage.url}}">
-                    <img src="{{user_profile.profileimage.url}}" class="rounded-full" width="70px" height="70px" alt="">
-                </a>
-                <a href="/view_groups"> <i class="fas fa-arrow-left">
-                    </i>
-                </a>
 
+        <div style="width:100%;margin:auto;padding:1rem; display: grid; grid-template-columns: auto auto">
+            <div style="display: flex;">
+                <a href="/view_groups" style="text-decoration: none; color: black;">
+                    <span style="color: gray; font-size:large; padding-top:7px" class="fa fa-arrow-left"
+                        title="Chats"></span>
+                </a>
+                <img src="{{user_profile.profileimage.url}}" style="border-radius: 50%;" width="40px" height="40px"
+                    alt="">
+                <a style="padding: 5px; font-size:large;color: black;"
+                    href="/profile/{{receiver_profile.user}}">{{receiver_profile.user}}</a>
+                    <span class="block capitalize font-semibold text-center">{{get_group}} - Group Chat</span>
             </div>
+
+            <div style="display: grid; grid-template-columns: auto auto auto">
+                <a href="" style="text-decoration: none; color: black;">
+                    <span style="color: gray; font-size:large; padding-top:7px" class="fa fa-phone"
+                        title="Chats"></span>
+                </a>
+                <a href="" style="text-decoration: none; color: black;">
+                    <span style="color: gray; font-size:large; padding-top:7px" class="fa fa-video-camera"
+                        title="Chats"></span>
+                </a>
+                <a href="" style="text-decoration: none; color: black;">
+                    <span style="color: gray; font-size:large; padding-top:7px" class="fa fa-navicon"
+                        title="Chats"></span>
+                </a>
+            </div>
+
         </div>
-
     </div><br><br>
 
     <!-- Here gets the comments , handled in like.js -->
@@ -61,12 +103,47 @@
             <input type="hidden" id="profile_image" name="profile_image" value="{{user_profile.profileimage.url}}">
             <input type="hidden" id="group_name" name="group_name" value="{{get_group.name}}">
             <div class="bg-gray-100 bg-gray-100 rounded-full rounded-md relative ">
-                <input type="text" id="comment" required name="comment" autofocus placeholder="Type a message"
-                    class="bg-transparent max-h-10 shadow-none">
-                <div class="absolute bottom-0 flex h-full items-center right-0 right-3 text-xl space-x-2">
-                    <!-- <a href="#"><i class="uil-image"></i></a>
-                                    <a href="#"> <i class="uil-video"></i></a> -->
-                </div>
+              
+                <textarea id="comment" name="comment" autofocus placeholder="Type a message"></textarea>
+            <!-- Submit button -->
+            <button type="submit"
+                class="header-links-item absolute bottom-0 flex h-full items-center text-xl space-x-2 submit-button">
+                <span class="fa fa-send" style='font-size:20px;'>bb</span>
+            </button>
+
+            <!-- Drop down to select file type -->
+            <a href="#"
+                class="header-links-item absolute bottom-0 flex h-full items-center   text-xl space-x-2 camera-icon">
+                <span class="fas fa-camera" style='font-size:20px;'></span>
+            </a>
+
+            <div uk-drop="mode: click;offset: 4" class="header_dropdown">
+                <ul class="dropdown_scrollbar" data-simplebar>
+
+                    <!-- Image icon -->
+                    <li>
+                        <div class="drop_content">
+                            <label for="image">
+                                <span class="fas fa-image" style='font-size:20px;' title="Chats"></span>
+                            </label>
+                            <input type="file" accept="image/*" style="display: none;" id="image" name="image" />
+
+                        </div>
+                    </li>
+                    <br>
+                    <!-- Video icon -->
+                    <li>
+                        <div class="drop_content">
+                            <label for="video">
+                                <span class="fas fa-video" style='font-size:20px;' title="Chats"></span>
+                            </label>
+                            <input type="file" id="video" style="display: none;" accept="video/*" name="video" />
+
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
             </div>
         </form>
     </div>
@@ -83,119 +160,4 @@
 </body>
 
 </html>
-# This file contains the WSGI configuration required to serve up your
-# web application at http://RunSchoolHub.pythonanywhere.com/
-# It works by setting the variable 'application' to a WSGI handler of some
-# description.
-#
-
-# +++++++++++ GENERAL DEBUGGING TIPS +++++++++++
-# getting imports and sys.path right can be fiddly!
-# We've tried to collect some general tips here:
-# https://help.pythonanywhere.com/pages/DebuggingImportError
-
-
-# +++++++++++ HELLO WORLD +++++++++++
-# A little pure-wsgi hello world we've cooked up, just
-# to prove everything works.  You should delete this
-# code to get your own working.
-
-
-HELLO_WORLD = """<html>
-<head>
-    <title>PythonAnywhere hosted web application</title>
-</head>
-<body>
-<h1>Hello, World!</h1>
-<p>
-    This is the default welcome page for a
-    <a href="https://www.pythonanywhere.com/">PythonAnywhere</a>
-    hosted web application.
-</p>
-<p>
-    Find out more about how to configure your own web application
-    by visiting the <a href="https://www.pythonanywhere.com/web_app_setup/">web app setup</a> page
-</p>
-</body>
-</html>"""
-
-
-def application(environ, start_response):
-    if environ.get('PATH_INFO') == '/':
-        status = '200 OK'
-        content = HELLO_WORLD
-    else:
-        status = '404 NOT FOUND'
-        content = 'Page not found.'
-    response_headers = [('Content-Type', 'text/html'), ('Content-Length', str(len(content)))]
-    start_response(status, response_headers)
-    yield content.encode('utf8')
-
-
-# Below are templates for Django and Flask.  You should update the file
-# appropriately for the web framework you're using, and then
-# click the 'Reload /yourdomain.com/' button on the 'Web' tab to make your site
-# live.
-
-# +++++++++++ VIRTUALENV +++++++++++
-# If you want to use a virtualenv, set its path on the web app setup tab.
-# Then come back here and import your application object as per the
-# instructions below
-
-
-# +++++++++++ CUSTOM WSGI +++++++++++
-# If you have a WSGI file that you want to serve using PythonAnywhere, perhaps
-# in your home directory under version control, then use something like this:
-#
-#import sys
-#
-#path = '/home/RunSchoolHub/path/to/my/app
-#if path not in sys.path:
-#    sys.path.append(path)
-#
-#from my_wsgi_file import application  # noqa
-
-
-# +++++++++++ DJANGO +++++++++++
-# To use your own django app use code like this:
-import os
-import sys
-#
-## assuming your django settings file is at '/home/RunSchoolHub/mysite/mysite/settings.py'
-## and your manage.py is is at '/home/RunSchoolHub/mysite/manage.py'
-path = '/home/RunSchoolHub/Levelup'
-if path not in sys.path:
-    sys.path.append(path)
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'Levelup.settings'
-#
-## then:
-from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
-
-
-
-# +++++++++++ FLASK +++++++++++
-# Flask works like any other WSGI-compatible framework, we just need
-# to import the application.  Often Flask apps are called "app" so we
-# may need to rename it during the import:
-#
-#
-#import sys
-#
-## The "/home/RunSchoolHub" below specifies your home
-## directory -- the rest should be the directory you uploaded your Flask
-## code to underneath the home directory.  So if you just ran
-## "git clone git@github.com/myusername/myproject.git"
-## ...or uploaded files to the directory "myproject", then you should
-## specify "/home/RunSchoolHub/myproject"
-#path = '/home/RunSchoolHub/path/to/flask_app_directory'
-#if path not in sys.path:
-#    sys.path.append(path)
-#
-#from main_flask_app_file import app as application  # noqa
-#
-# NB -- many Flask guides suggest you use a file called run.py; that's
-# not necessary on PythonAnywhere.  And you should make sure your code
-# does *not* invoke the flask development server with app.run(), as it
-# will prevent your wsgi file from working.
+ 

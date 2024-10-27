@@ -24,7 +24,7 @@
             color: #333;
             padding: 1rem;
             text-align: center;
-
+            margin: 0%;
             overflow: hidden;
             position: fixed;
             bottom: 0;
@@ -34,14 +34,12 @@
 
         .containers {
             display: grid;
-            grid-template-columns: auto auto auto auto;
-            grid-gap: 1px;
-            padding: 1px;
+            grid-template-columns: auto auto auto auto auto;
+
         }
 
         .containers>div {
             text-align: center;
-            padding: 2px 0;
         }
     </style>
 </head>
@@ -69,94 +67,70 @@
                         </b>
                     </div>
                 </div>
-            </form>
 
+                <div class="right-side lg:pr-4">
+                    <!-- upload -->
 
-            <div class="right-side lg:pr-4">
-                <!-- upload -->
-
-                <a href="#" style="display: none;"
-                    class="bg-pink-500 flex font-bold hidden hover:bg-pink-600 hover:text-white inline-block items-center lg:block max-h-10 mr-4 px-4 py-2 rounded shado text-white">
-                    <ion-icon name="add-circle" class="-mb-1
+                    <a href="#" style="display: none;"
+                        class="bg-pink-500 flex font-bold hidden hover:bg-pink-600 hover:text-white inline-block items-center lg:block max-h-10 mr-4 px-4 py-2 rounded shado text-white">
+                        <ion-icon name="add-circle" class="-mb-1
                                          mr-1 opacity-90 text-xl uilus-circle"></ion-icon> Upload Pics / Videos
-                </a>
-                <!-- upload dropdown box -->
-                <div uk-dropdown="pos: top-right;mode:click ; animation: uk-animation-slide-bottom-small"
-                    class="header_dropdown">
+                    </a>
+                    <!-- upload dropdown box -->
+                    <div uk-dropdown="pos: top-right;mode:click ; animation: uk-animation-slide-bottom-small"
+                        class="header_dropdown">
 
-                    <!-- notivication header -->
-                    <div class="px-4 py-3 -mx-5 -mt-4 mb-5 border-b">
-                        <h4>Upload Pics or Videos</h4>
-                    </div>
-
-
-                    <!-- notification contents -->
-                    <div class="flex justify-center flex-center text-center">
-
-                        <div class="flex flex-col choose-upload text-center">
-
-
-                            <form action="" method="POST">
-                                {% csrf_token %}
-                                <div uk-form-custom style="height: max-content;">
-                                    <textarea name="caption" cols="3" rows="1" placeholder="Please write something...">
-                                    </textarea>
-                                    <br>
-                                    <h6><input type="file" multiple name="image" accept="*/image/*">Upload Pictures</h6>
-                                    <br>
-                                    <h6><input type="file" multiple name="video" accept="*/video/*">Upload Videos</h6>
-                                    <br>
-                                    <h6><input type="file" multiple name="audio" accept="*/audio/*">Upload Audio</h6>
-                                    <br>
-                                    <h6><input type="file" multiple name="pdf" accept="*/audio/*">Upload Pdf</h6>
-                                    <br>
-                                    <input type="submit" value="Upload" class="btn btn-info">
-
-                            </form>
+                        <!-- notivication header -->
+                        <div class="px-4 py-3 -mx-5 -mt-4 mb-5 border-b">
+                            <h4>Upload Pics or Videos</h4>
                         </div>
-                        </form>
-                    </div>
 
-                </div>
-            </div>
-            <a href="search_user" class="header-links-item" title="Users you can follow">
-                <span class="far fa-user" style='font-size:20px;'></span>
-            </a>
 
-            <a href="#chat" class="header-links-item">
-                <span class="fas fa-comments" style='font-size:20px;' title="Chats"></span>
-            </a>
-            <div uk-drop="mode: click;offset: 4" class="header_dropdown">
-                <h4 title="Chats"
-                    class="-mt-5 -mx-5 bg-gradient-to-t from-gray-100 to-gray-50 border-b font-bold px-6 py-3">
-                    Chats </h4>
-                <ul class="dropdown_scrollbar" data-simplebar>
-                    <li>
-                        <a href="view_chats" title="Chats">
-                            <div class="drop_content">
-                                <p> <strong class="text-link">My Chats</strong>
+                        <!-- notification contents -->
+                        <div class="flex justify-center flex-center text-center">
+
+                            <div class="flex flex-col choose-upload text-center">
+
+
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+                                    <div uk-form-custom style="height: max-content;">
+                                        <textarea name="caption" cols="3" rows="1"
+                                            placeholder="Please write something...">
+                                    </textarea>
+                                        <br>
+                                        <h6><input type="file" multiple name="image" accept="*/image/*">Upload Pictures
+                                        </h6>
+                                        <br>
+                                        <h6><input type="file" multiple name="video" accept="*/video/*">Upload Videos
+                                        </h6>
+                                        <br>
+                                        <h6><input type="file" multiple name="audio" accept="*/audio/*">Upload Audio
+                                        </h6>
+                                        <br>
+                                        <h6><input type="file" multiple name="pdf" accept="*/audio/*">Upload Pdf</h6>
+                                        <br>
+                                        <input type="submit" value="Upload" class="btn btn-info">
+
+                                </form>
                             </div>
-                        </a>
-                    </li>
+            </form>
+        </div>
 
-                    <li>
-                        <a href="view_groups" title="Groups">
-                            <!-- <div class="drop_avatar"> <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}"
-                                                alt="">
-                                        </div> -->
-                            <div class="drop_content">
-                                <p> <strong class="text-link">My Groups</strong>
-                            </div>
-                        </a>
-                    </li>
+        </div>
+        </div>
+        <a href="/search_user" class="header-links-item" title="Users you can follow">
+            <span class="far fa-user" style='font-size:20px;'></span>
+        </a>
+
+        <a href="/notifications" class="header-links-item">
+            <span class="fas fa-bell" style='font-size:20px;' title="Chats"></span>
+        </a>
 
 
-                </ul>
-            </div>
+        <!-- Messages -->
 
-            <!-- Messages -->
-
-            <!-- <a href="#" class="header-links-item">
+        <!-- <a href="#" class="header-links-item">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
                                 role="img" width="0.5em" height="0.5em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16">
                                 <g fill="currentColor">
@@ -165,9 +139,9 @@
                                 </g>
                             </svg>
                         </a> -->
-            <a href="upload" class="header-links-item" title="upload post"><span class="fas fa-upload"
-                    style='font-size:23px;'></span></a>
-            <!-- <div uk-drop="mode: click;offset: 4" class="header_dropdown">
+        <a href="upload" class="header-links-item" title="upload post"><span class="fas fa-upload"
+                style='font-size:23px;'></span></a>
+        <!-- <div uk-drop="mode: click;offset: 4" class="header_dropdown">
                             <h4 class="-mt-5 -mx-5 bg-gradient-to-t from-gray-100 to-gray-50 border-b font-bold px-6 py-3">
                                 Messages </h4>
                             <ul class="dropdown_scrollbar" data-simplebar>
@@ -189,19 +163,19 @@
                             <a href="#" class="see-all">See all</a>
                         </div> -->
 
-            <!-- profile -->
+        <!-- profile -->
 
-            <a href="#">
-                <img src="{{user_profile.profileimage.url}}" class="header-avatar" alt="">
-            </a>
-            <div uk-drop="mode: click;offset:9" class="header_dropdown profile_dropdown border-t">
-                <ul>
-                    <li><a href="setting" title="account settings"> Account setting </a> </li>
-                    <li><a href="profile/{{request.user}}" title="My profile">Profile </a> </li>
-                    <li><a href="favourites">Favorites</a> </li>
-                    <li><a href="logout"> Log Out</a></li>
-                </ul>
-            </div>
+        <a href="#">
+            <img src="{{user_profile.profileimage.url}}" class="header-avatar" alt="">
+        </a>
+        <div uk-drop="mode: click;offset:9" class="header_dropdown profile_dropdown border-t">
+            <ul>
+                <li><a href="setting" title="account settings"> Account setting </a> </li>
+                <li><a href="profile/{{request.user}}" title="My profile">Profile </a> </li>
+                <li><a href="favourites">Favorites</a> </li>
+                <li><a href="logout"> Log Out</a></li>
+            </ul>
+        </div>
 
         </div>
         </div>
@@ -224,15 +198,23 @@
             </div>
 
             <div>
+                <a href="/view_chats">
+                    <span class="fa fa-comments" style='font-size:20px;' title="Chats"></span><br>
+                    Chats
+                </a>
+            </div>
+
+            <div>
+                <a href="/view_groups">
+                    <span class="fa fa-users" style='font-size:20px;' title="Group"></span><br>
+                    Groups
+                </a>
+            </div>
+
+            <div>
                 <a href="/student_emergency">
                     <span class="fa fa-ambulance" style='font-size:20px;' title="Emergency"></span><br>
                     Emergency
-                </a>
-            </div>
-            <div>
-                <a href="/notifications">
-                    <span class="fa fa-bell" style='font-size:20px;' title="Notifications"></span><br>
-                    Updates
                 </a>
             </div>
         </div>

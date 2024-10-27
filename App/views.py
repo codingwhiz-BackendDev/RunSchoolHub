@@ -3,7 +3,7 @@ from django.contrib.auth.models import User,auth,Group
 from django.contrib.auth import authenticate,login
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Profile,Post,Comment,Message,FollowersCount,LikePost,Favourite_post,Notifications,Group_comment
+from .models import Profile,Post,Comment,Message,FollowersCount,Chat,LikePost,Favourite_post,Notifications,Group_comment
 from itertools import chain
 import random
 from django.db.models import Q
@@ -12,6 +12,8 @@ from django.core.files.storage import FileSystemStorage
 from django.core.mail import send_mail
 from twilio.rest import Client
 from decouple import config
+from django.core.mail import send_mail
+from django.conf import settings
 
 # Create your views here.
 @login_required(login_url='welcome_page')
@@ -85,6 +87,14 @@ def register(request):
                 user_model = User.objects.get(username=username)
                 new_profile = Profile.objects.create(user=user_model,id_user=user_model.id)
                 new_profile.save();
+                
+                send_mail(
+                    'Welcome Message',
+                    'Hi welcome to runschoolhub. We are happy to have you',
+                    [settings.EMAIL_HOST_USER],
+                    email,
+                    fail_silently=False
+                )
                  
                 return redirect('login')
         else:
@@ -112,7 +122,7 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
-    return redirect('welcome_page')
+    return redirect('login')
 
 @login_required(login_url='login')
 def setting(request): 
@@ -201,14 +211,17 @@ def upload(request):
         pdfs = request.FILES.getlist('pdf')
         
         
-        for video in videos:
-            video = Post.objects.create(video=video, caption=caption, profileimage=profileimage, user=user)
-        for image in images:
-            images = Post.objects.create(image=image, caption=caption, profileimage=profileimage, user=user)
-        for audio in audios:
-            audio = Post.objects.create(audio=audio, caption=caption, profileimage=profileimage, user=user)
-        for pdf in pdfs:
-            pdf = Post.objects.create(pdf=pdf, caption=caption, profileimage=profileimage, user=user)
+        if images or videos or audios or pdfs:
+            for video in videos:
+                video = Post.objects.create(video=video, caption=caption, profileimage=profileimage, user=user)
+            for image in images:
+                images = Post.objects.create(image=image, caption=caption, profileimage=profileimage, user=user)
+            for audio in audios:
+                audio = Post.objects.create(audio=audio, caption=caption, profileimage=profileimage, user=user)
+            for pdf in pdfs:
+                pdf = Post.objects.create(pdf=pdf, caption=caption, profileimage=profileimage, user=user)
+        else:
+            caption = Post.objects.create(caption=caption, profileimage=profileimage, user=user)
 
         
  
@@ -259,9 +272,9 @@ def like_post(request):
             post.save() 
             
         return HttpResponse(post.no_of_likes)
+
+
 @login_required(login_url='login')
-
-
 def post(request, pk):
     user_profile =  Profile.objects.get(user = request.user)
     post = Post.objects.get(id=pk) 
@@ -285,15 +298,42 @@ def follow(request):
         follower = request.POST['follower']
         user = request.POST['user']
         
+        # Deletes follower if it already exists
         if FollowersCount.objects.filter(follower=follower, user=user).first():
             delete_follower = FollowersCount.objects.get(follower=follower, user=user)
             delete_follower.delete()
+            
+            # Delete Chat model if it exists
+            delete_chat1 = Chat.objects.filter(follower=follower, user=user).first() 
+            delete_chat2 = Chat.objects.filter(follower=user, user=follower).first()
+            delete_chat1.delete()
+            delete_chat2.delete()
+            
             return HttpResponse('Follow')
+        # Creates folllower if it does not exists
         else:
             new_follower = FollowersCount.objects.create(follower=follower, user=user)
             new_follower.save() 
+            
+            #Gets user profile
+            user_object = User.objects.get(username=user)
+            user_profile = Profile.objects.get(user = user_object)
+            
+            follower_object = User.objects.get(username=follower)
+            follower_profile = Profile.objects.get(user = follower_object)
+            
+            print(user_profile.id_user)
+            print(follower_profile.id_user)
+            # Create chat models
+            new_chat1 = Chat.objects.create(follower=follower, user=user, user_profile_img=user_profile.profileimage, follower_profile_img=follower_profile.profileimage , id_user=user_profile.id_user, id_follower=follower_profile.id_user)
+            new_chat2 = Chat.objects.create(follower=user, user=follower, follower_profile_img=user_profile.profileimage, user_profile_img=follower_profile.profileimage, id_user=follower_profile.id_user, id_follower=user_profile.id_user)
+            new_chat1.save()
+            new_chat2.save()
             return HttpResponse('Unfollow')
- 
+        
+  
+
+
 @login_required(login_url='login')       
 def search_user(request):
     user_object = User.objects.get(username=request.user.username)
@@ -427,7 +467,7 @@ def favourites(request):
 def view_groups(request):
     user_profile = Profile.objects.get(user=request.user) 
     group = Group.objects.all()
-    return render(request, 'view_groups.html', {'group':group})
+    return render(request, 'view_groups.html', {'group':group, 'user_profile':user_profile})
 
 @login_required(login_url='login')  
 def create_group(request):
@@ -489,21 +529,27 @@ def group_chat_comment(request):
 def get_group_comments(request,pk):
     comments = Group_comment.objects.filter(group_name=pk)
     return JsonResponse({'comments':list(comments.values())})
+
+@login_required(login_url='login')
+def view_chats(request):    
+    user_profile = Profile.objects.get(user=request.user)    
+    # Get the list of Chat objects where the logged-in user is the follower
+    chat_friends = Chat.objects.filter(follower=request.user.username)
+
+    # Use a dictionary to store unique chat friends by user
+    unique_chat_friends = {}
     
-def view_chats(request):
-    users = Profile.objects.exclude(user=request.user)
-    user = Profile.objects.exclude(user=request.user)
-    for user in user:    
-        print(user.user)
-        
-        # user_id =  user_id.id_user
-        
-        # messages = Message.objects.filter(Q(senderId = user_id)|Q(receiverId = user_id))
-        
-        # print(messages)
-        
-        return render(request, 'view_chats.html', {'users': users, 'messages':messages})
-    return render(request, 'view_chats.html', {'users': users})
+    for chat in chat_friends:
+        # Only add if user is not already in the dictionary
+        if chat.user not in unique_chat_friends:
+            unique_chat_friends[chat.user] = chat
+
+    # Convert dictionary values back to a list
+    unique_chat_friends_list = list(unique_chat_friends.values())
+
+    print(unique_chat_friends_list)  # Prints the unique chat objects
+    return render(request, 'view_chats.html', {'chat_friends': unique_chat_friends_list, 'user_profile':user_profile})
+
 
  
 
@@ -518,8 +564,7 @@ def chat(request,user_id):
 # To send message in a chat 
 @login_required(login_url='login')  
 def send_chat_message(request):
-    if request.method == 'POST': 
-        print(request.POST) 
+    if request.method == 'POST':  
         sender = request.POST['sender']
         receiver = request.POST['receiver']
         profile_image = request.POST['profile_image']
@@ -541,7 +586,13 @@ def send_chat_message(request):
             profileimage=profile_image,
             message=message
         )
-
+        chat_friends = Chat.objects.filter(Q(follower=request.user.username, user=receiver)|Q(follower=receiver, user=request.user.username))
+        print(chat_friends)
+        if message:
+            for friend in chat_friends:
+                friend.last_message = str(messages)
+                friend.save()
+        
         # If image is provided, update the message with the image
         if image:
             fs = FileSystemStorage()
@@ -549,6 +600,9 @@ def send_chat_message(request):
             image_path = fs.url(filename)
             messages.image = image_path
             messages.save()
+            for friend in chat_friends:
+                friend.last_message = 'Sent a photo'
+                friend.save()
 
         # If video is provided, update the message with the video
         if video:
@@ -557,6 +611,9 @@ def send_chat_message(request):
             video_path = fs.url(filename)
             messages.video = video_path
             messages.save()
+            for friend in chat_friends:
+                friend.last_message = 'Sent a video'
+                friend.save()
             
     return HttpResponse('Message sent')
 
@@ -630,18 +687,7 @@ def course_outlines(request):
 @login_required(login_url='login')
 def student_emergency(request): 
     user_profile = Profile.objects.get(user=request.user) 
-    if request.method == 'POST':
-        body = request.POST['message']
-        account_sid = 'AC9753a1bd05b961528a8ecc63a3ba4166'
-        auth_token = '91e7266a55e8353b4e038ea056c697d0'
-        client = Client(account_sid, auth_token)
-        
-        message = client.messages.create(
-            from_= '+18042698851',
-            body = body,
-            to = '+2348072846035'
-        ) 
-    #     print(message.sid)
+ 
     return render(request, 'student_emergency.html', {'user_profile':user_profile})
 
 @login_required(login_url='login')

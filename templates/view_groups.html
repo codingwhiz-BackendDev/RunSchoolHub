@@ -1,3 +1,4 @@
+{% extends 'base.html' %}
 {% load static %}
 <html lang="en">
 
@@ -15,51 +16,41 @@
 
 <body>
 
-    <!-- right sidebar-->
+    {% block content %}
+    <br><br><br><br>
     <div class="lg:w-8/12 m-auto mt-4">
         {% for message in messages %}
         <div class="alert alert-dark text-center">
             <p>{{message}}</p>
         </div>
         {% endfor %}
-        <div class="bg-white  shadow-md rounded-md overflow-hidden">
-
-            <div class="bg-gray-50  border-b border-gray-100 flex items-baseline justify-between py-4 px-6 ">
-                <h2 class="font-semibold text-lg">Create Group</h2>
-                <a href="/"> <span class="btn btn-danger">Home</span></a>
-            </div>
-
-
+        <div class="bg-whit  shadow-md rounded-md overflow-hidden">
 
             <form action="create_group" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="left-side">
                     <!-- <input type="file"> -->
                     <div style="display: flex;">
-                        <input type="text" required name="group_name" placeholder="Group Name....">
+                        <input type="text" required name="group_name" placeholder="Enter Group name to create ....">
                         <input type="submit" value="Create">
                     </div>
                 </div>
             </form>
 
-
             <!------------------------- Search Groups ------------------------>
 
-            <div class="bg-gray-50  border-b border-gray-100 flex items-baseline justify-between py-4 px-6 ">
-                <h4 class="font-semibold text-lg">Search Groups</h4>
-            </div>
             <form action="search_group" method="POST">
                 {% csrf_token %}
                 <div class="left-side">
                     <!-- <input type="file"> -->
                     <div style="display: flex;">
-                        <input type="text" required name="group_name" placeholder="Group Name....">
+                        <input type="text" required name="group_name" placeholder="Search group....">
                     </div>
                 </div>
             </form>
 
             {% for result in result reversed %}
-            <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
+            <div class="bg-white divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
                 <div class="flex items-center justify-between py-3">
                     <div class="flex flex-1 items-center space-x-4">
                         <!-- <a href="profile/{{users.user}}">
@@ -96,7 +87,7 @@
 
 
             {% for group in group reversed %}
-            <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
+            <div class="bg-white divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
                 <div class="flex items-center justify-between py-3">
                     <div class="flex flex-1 items-center space-x-4">
                         <div class="flex flex-col">
@@ -120,6 +111,8 @@
 
         </div>
     </div>
+    {% endblock content %}
+
 </body>
 
 </html>
