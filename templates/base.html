@@ -12,15 +12,14 @@
     <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<<<<<<< HEAD
+
     <title>
         {% block title %}
         RunSchoolHub
         {% endblock title %}
     </title>
-=======
+
     <title>Document</title>
->>>>>>> e4bb1bd81111908396c8e687371b44acf7dbbb35
     <style>
         footer {
             background-color: #fff;
@@ -37,7 +36,7 @@
 
         .containers {
             display: grid;
-            grid-template-columns: auto auto auto auto auto;
+            grid-template-columns: auto auto auto auto;
             grid-gap: 1px;
             padding: 1px;
         }
@@ -103,12 +102,8 @@
                                 {% csrf_token %}
                                 <div uk-form-custom style="height: max-content;">
                                     <textarea name="caption" cols="3" rows="1" placeholder="Please write something...">
-<<<<<<< HEAD
 
-=======
-                                            
->>>>>>> e4bb1bd81111908396c8e687371b44acf7dbbb35
-                                                </textarea>
+                                    </textarea>
                                     <br>
                                     <h6><input type="file" multiple name="image" accept="*/image/*">Upload Pictures</h6>
                                     <br>
@@ -190,9 +185,9 @@
                                         </div>
                                     </a>
                                 </li>
-            
-            
-            
+
+
+
                             </ul>
                             <a href="#" class="see-all">See all</a>
                         </div> -->
@@ -219,15 +214,13 @@
     <footer>
         <div class="containers">
             <div>
-<<<<<<< HEAD
                 <a href="/">
                     <span class="fa fa-home" style='font-size:20px;' title="Home"></span><br>
                     Home
                 </a>
             </div>
             <div>
-=======
->>>>>>> e4bb1bd81111908396c8e687371b44acf7dbbb35
+
                 <a href="/course_outlines">
                     <span class="fa fa-book" style='font-size:20px;' title="course_outlines"></span><br>
                     Courses
@@ -241,25 +234,11 @@
                 </a>
             </div>
             <div>
-<<<<<<< HEAD
                 <a href="/notifications">
                     <span class="fa fa-bell" style='font-size:20px;' title="Notifications"></span><br>
                     Updates
                 </a>
             </div>
-=======
-                <a href="">
-                    <span class="fa fa-bell" style='font-size:20px;' title="Groups"></span><br>
-                    Updates
-                </a>
-            </div>
-            <div>
-                <a href="/">
-                    <span class="fa fa-car" style='font-size:20px;' title="Calls"></span><br>
-                    Ride
-                </a>
-            </div>
->>>>>>> e4bb1bd81111908396c8e687371b44acf7dbbb35
 
         </div>
     </footer>

@@ -106,6 +106,20 @@ $(document).ready(function () {
                     }
                 }
 
+                function scrollToBottom() {
+                    window.scrollTo(0, document.body.scrollHeight)
+
+                }
+                if (!document.body.classList.contains("active")) {
+                    scrollToBottom();
+                }
+                document.body.onmouseenter = () => {
+                    document.body.classList.add("active");
+                }
+                document.body.onmouseleave = () => {
+                    document.body.classList.remove("active");
+                }
+
             },
             error: function (response) {
                 //alert('an error occured')

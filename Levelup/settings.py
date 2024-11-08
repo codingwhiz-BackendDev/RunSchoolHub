@@ -10,8 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-from pathlib import Path, os 
- 
+from pathlib import Path, os
+
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -30,8 +30,8 @@ SECRET_KEY = 'django-insecure-v*gs6^#b2dee*i#f20(hz4x+qv-d*er!q&mrnjbf)0%#a!sz$j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
- 
+ALLOWED_HOSTS = ['RunSchoolHub.pythonanywhere.com']
+
 # Application definition
 
 INSTALLED_APPS = [
