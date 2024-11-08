@@ -30,13 +30,10 @@ SECRET_KEY = 'django-insecure-v*gs6^#b2dee*i#f20(hz4x+qv-d*er!q&mrnjbf)0%#a!sz$j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-<<<<<<< HEAD
+
 ALLOWED_HOSTS = ['RunSchoolHub.pythonanywhere.com']
 
-=======
-ALLOWED_HOSTS = ['192.168.202.17']
- 
->>>>>>> de1ee6a44f834efd78a7cc3a2b70f6b2159b744c
+
 # Application definition
 
 INSTALLED_APPS = [
