@@ -22,11 +22,11 @@
     <div class="m-auto shadow rounded-md  -mx-2 lg:mx-0 w-4">
 
         <!--<h1 class="lg:text-2xl text-lg font-extrabold leading-none text-gray-900 tracking-tight mb-5"> Feed </h1>--->
-        <br><br>
+        <br>
         <div class="lg:flex justify-center lg:space-x-10 lg:space-y-0 space-y-5">
 
             <!-- left sidebar-->
-            <div class="space-y-5 flex-shrink-0 lg:w-7/12">
+            <div class="space-y-3 flex-shrink-0 lg:w-7/12">
 
                 {% for post in post reversed %}
                 <!-- post 1-->
@@ -117,14 +117,13 @@
                     </div>
                     <div class="">
                         <div class="card-body">{{post.caption}}
-                            <p><a href="post/{{post.id}}"><span class="fas fa-eye"></span></a></p>
                         </div>
                     </div>
                     <div>
 
 
                         {% if post.image %}
-                        <a href="{{post.image.url}}">
+                        <a href="/post/{{post.id}}">
                             <img src="{{post.image.url}}" alt="">
                         </a>
                         {% endif %}
@@ -146,7 +145,7 @@
 
                         {% if post.pdf %}
                         <a href="{{post.pdf.url}}">
-                            <object width="100%" height="500px" data="{{post.pdf.url}}"></object>
+                            <iframe width="100%" height="500px" src="{{post.pdf.url}}" frameborder="0"></iframe>
                         </a>
                         {% endif %}
 
@@ -182,22 +181,27 @@
                                 </button>
                             </form> -->
 
-                            <div class="p-2 rounded-full text-black">
-                                {% if post.no_of_commenters == 0 or post.no_of_commenters == 1 %}
-                                <span>{{post.no_of_commenters}} comment</span>
-                                {% else %}
-                                <span>{{post.no_of_commenters}} comments</span>
-                                {% endif %}
-                            </div>
+                            <a href="post/{{post.id}}">
+                                <div class="p-2 rounded-full text-black">
+                                    {% if post.no_of_commenters == 0 or post.no_of_commenters == 1 %}
+                                    <span>{{post.no_of_commenters}} comment</span>
+                                    {% else %}
+                                    <span>{{post.no_of_commenters}} comments</span>
+                                    {% endif %}
+                                </div>
+                            </a>
 
-                            <div class="p-2 rounded-full text-black">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    width="25" height="25" class="">
-                                    <path fill-rule="evenodd"
-                                        d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
+
+                            <a href="post/{{post.id}}">
+                                <div class="p-2 rounded-full text-black">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                        width="25" height="25" class="">
+                                        <path fill-rule="evenodd"
+                                            d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </a>
 
 
                             {% if post.image %}

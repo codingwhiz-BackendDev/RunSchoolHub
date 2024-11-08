@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile,Post, Comment, FollowersCount,LikePost, Favourite_post,Notifications, Group_comment,Message
+from .models import Profile,Post, Comment, FollowersCount,LikePost, Favourite_post,Notifications, Group_comment,Message, Chat
 
 
 # Register your models here.
@@ -13,3 +13,4 @@ admin.site.register(Favourite_post)
 admin.site.register(Group_comment)
 admin.site.register(Message)
 admin.site.register(Notifications)
+admin.site.register(Chat)

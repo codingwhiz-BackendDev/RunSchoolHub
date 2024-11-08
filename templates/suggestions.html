@@ -20,7 +20,7 @@
         <div class="bg-white  shadow-md rounded-md overflow-hidden">
 
             <div class="bg-gray-50  border-b border-gray-100 flex items-baseline justify-between py-4 px-6 ">
-                <h2 class="font-semibold text-lg"> Search For Users You Can Follow</h2>
+                <h2 class="font-semibold text-lg"> Search For Users</h2>
                 <a href="/"> <span class="btn btn-danger">Home</span></a>
             </div>
 
@@ -52,7 +52,7 @@
                     </div>
 
                     <p class="border-gray-200 font-semibold px-4 py-1">
-                        {{users.bio}} </p>
+                        {{users.bio|truncatewords:5}} </p>
                 </div>
 
             </div>
@@ -95,7 +95,7 @@
                     </div>
 
                     <p class="border-gray-200 font-semibold px-4 py-1">
-                        {{suggestion.bio}} </p>
+                        {{suggestion.bio|truncatechars:22}} </p>
                 </div>
                 {% endfor %}
             </div>

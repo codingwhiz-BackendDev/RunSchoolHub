@@ -29,7 +29,7 @@
                             </p><br>
                             <span class="block capitalize font-semibold">
                                 <ol>
-                                    {% for favourites in favourites %}
+                                    {% for favourites in favourites reversed %}
                                     <li class="font-semibold text-lg"><a href="/media/{{favourites}}">{{favourites}}</a>
                                     </li> <br>
                                     {% endfor %}

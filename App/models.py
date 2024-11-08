@@ -9,7 +9,7 @@ User = get_user_model()
 
 
 
-
+# Profiles for Users once they register  
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) 
     id_user = models.IntegerField()
@@ -23,7 +23,8 @@ class Profile(models.Model):
     
     def __str__(self):
         return self.user.username
-    
+
+# Posts created in the upload views  
 class Post(models.Model):  
     user = models.CharField(max_length=50)
     image = models.ImageField(upload_to='Image', blank=True)
@@ -42,7 +43,8 @@ class Post(models.Model):
     
     def __str__(self):
         return self.user
-    
+
+   
 class Comment(models.Model):
     name = models.CharField(max_length=50000000, null=True) 
     comment =  models.CharField(max_length=50000000, null=True)
@@ -62,10 +64,25 @@ class LikePost(models.Model):
            return str(self.name)
     
 class FollowersCount(models.Model):
-    follower = models.CharField(max_length=500)
-    user = models.CharField(max_length=500)
+    follower = models.CharField(max_length=500) #Logged in user
+    user = models.CharField(max_length=500)#person logged in user is following
     def __str__(self):
-        return self.user
+        return self.follower
+
+#create a chat model for followers and followee 
+class Chat(models.Model):
+    follower = models.CharField(max_length=500) #Logged in user
+    user = models.CharField(max_length=500) #person logged in user is following
+    user_profile_img = models.FileField(upload_to='Chat Image', max_length=100, default='blank.png') 
+    follower_profile_img = models.FileField(upload_to='Chat Image', max_length=100, default='blank.png')
+    id_user = models.IntegerField(null=True)
+    id_follower = models.IntegerField(null=True)
+    last_message = models.CharField(max_length=255, default='No Messeges')
+    last_message_time = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.follower
+    
     
 class Favourite_post(models.Model):
     file = models.FileField(upload_to='Favourites', max_length=100)
@@ -99,7 +116,7 @@ class Message(models.Model):
     image = models.FileField(upload_to='Image', max_length=100, null=True) 
     video = models.FileField(upload_to='Image', max_length=100, null=True) 
     def __str__(self):
-        return str(self.sender)
+        return str(self.message)
 
  
  

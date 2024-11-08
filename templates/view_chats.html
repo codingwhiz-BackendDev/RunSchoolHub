@@ -1,3 +1,4 @@
+{% extends 'base.html' %}
 {% load static %}
 <html lang="en">
 
@@ -15,18 +16,17 @@
 </head>
 
 <body>
+
+    {% block content %}
+    <br><br><br><br>
     <div class="lg:w-8/12 m-auto mt-4">
         <!------------------------- Search Chatss ------------------------>
-
-        <div class="bg-gray-50  border-b border-gray-100 flex items-baseline justify-between py-4 px-6 ">
-            <h4 class="font-semibold text-lg">Search Chats</h4>
-        </div>
         <form action="search_user" method="POST">
             {% csrf_token %}
             <div class="left-side">
                 <!-- <input type="file"> -->
                 <div style="display: flex;">
-                    <input type="text" required name="user" placeholder="User Chat....">
+                    <input type="text" required name="user" placeholder="Search Chat ....">
                 </div>
             </div>
         </form>
@@ -53,35 +53,41 @@
         <div class="bg-white  shadow-md rounded-md overflow-hidden">
             <div class="bg-gray-50  border-b border-gray-100 flex items-baseline justify-between py-4 px-6 ">
                 <h2 class="font-semibold text-lg">My Chats</h2>
-                <a href="/"> <span class="btn btn-danger">Home</span></a>
             </div>
 
 
-            {% for user in users reversed %}
-            <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
+            {% for user in chat_friends reversed %}
+            <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4">
                 <div class="flex items-center justify-between py-3">
-                    <div class="flex flex-1 items-center space-x-4">
-                        <div class="flex flex-col">
-                            <a href="profile/{{user}}">
-                                <img src="{{user.profileimage.url}}" class="bg-gray-200 rounded-full w-10 h-10">
+                    <div class="flex items-center space-x-4">
+                        <!-- Profile Image -->
+                        <div>
+                            <a href="profile/{{user.user}}">
+                                <img src="{{user.user_profile_img.url}}" class="bg-gray-200 rounded-full w-10 h-10">
                             </a>
-
-                            <span class="block capitalize font-semibold"><a href="chat/{{user.id_user}}">{{user}}</a>
-                            </span>
-                            <input type="hidden" id="user_id" value="{{user.id_user}}" name="user_id">
-
-
-                            {% comment %} {{messages}} {% endcomment %}
-
                         </div>
-
+                        <!-- User Info and Message -->
+                        <div class="flex flex-col">
+                            <a href="chat/{{user.id_user}}" class="block capitalize font-semibold">
+                                {{user.user}}
+                            </a>
+                            <span class="block text-sm text-gray-500">{{user.last_message|truncatewords:5}}</span>
+                        </div>
                     </div>
+                    <!-- Time -->
+                    <span class="text-sm text-gray-500">
+                        {{user.last_message_time|time:"h:i a" }}
+
+                    </span>
                 </div>
             </div>
+
             <hr style="background-color: black;">
             {% endfor %}
         </div>
     </div>
+    {% endblock content %}
+
     <script>
         const user_id = document.getElementById('user_id')
         console.log(user_id)
